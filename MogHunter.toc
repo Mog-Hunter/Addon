@@ -1,0 +1,7 @@
+## Interface: 100002
+## Title: MogHunter
+## Notes: Exports character data to upload to http://moghunter.com
+## Author: Parranoia
+## Version: 1.0
+
+MogHunter.lua
