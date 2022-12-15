@@ -1,7 +1,7 @@
 SLASH_MOGHUNTER1 = '/moghunter'
 SLASH_MOGHUNTER2 = '/mh'
 
-local function CreateMHScrollFrame(text)
+local function CreateMHScrollFrame(title, text)
     local f = CreateFrame("Frame", nil, UIParent, "DialogBoxFrame")
     f:SetPoint("CENTER", 0, 0)
     f:SetMovable(true)
@@ -16,10 +16,16 @@ local function CreateMHScrollFrame(text)
     end)
     f:SetScript("OnMouseUp", f.StopMovingOrSizing)
 
+    f.title = f:CreateFontString(nil, "ARTWORK")
+    f.title:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
+    f.title:SetPoint("TOP", 0, -16)
+    f.title:SetText(title)
+
+
     f.scrollFrame = CreateFrame("ScrollFrame", nil, f, "UIPanelScrollFrameTemplate")
     f.scrollFrame:SetPoint("LEFT", 16, 0)
     f.scrollFrame:SetPoint("RIGHT", -32, 0)
-    f.scrollFrame:SetPoint("TOP", 0, -16)
+    f.scrollFrame:SetPoint("TOP", 0, -48)
     f.scrollFrame:SetPoint("BOTTOM", 0, 90)
 
     local eb = CreateFrame("EditBox", nil, f.scrollFrame)
@@ -36,7 +42,7 @@ local function CreateMHScrollFrame(text)
 end
 
 local function ExportWardrobe()
-    items = {}
+    local items = {}
 
     for _, slot in pairs(Enum.TransmogCollectionType) do
         for i, appearance in ipairs(C_TransmogCollection.GetCategoryAppearances(slot)) do
@@ -65,21 +71,22 @@ local function ExportWardrobe()
     end
 
 
-    str = "[\n" .. table.concat(items, ', \n') .. "\n]"
-
-    f = CreateMHScrollFrame(str)
+    local str = "[\n" .. table.concat(items, ', \n') .. "\n]"
+    local class = select(2, UnitClass("player"))
+    local title = "Collected Appearances for |c" .. RAID_CLASS_COLORS[class].colorStr .. class .. "|r"
+    local f = CreateMHScrollFrame(title, str)
     f:Show()
 end
 
 local function ExportOutfits()
-    outfits = {}
+    local outfits = {}
 
     print('Exporting outfits')
     for outfitID in pairs(C_TransmogCollection.GetOutfits()) do
-        print(outfitID)
-        name, icon = C_TransmogCollection.GetOutfitInfo(outfitID)
+        print('OutfitID: ' .. outfitID)
+        local name, icon = C_TransmogCollection.GetOutfitInfo(outfitID)
         print('Outfit: ' .. name)
-        for items in pairs(C_TransmogCollection.GetOutfitItemTransmogInfoList(outfitID)) do
+        for item in pairs(C_TransmogCollection.GetOutfitItemTransmogInfoList(outfitID)) do
 
         end
     end
